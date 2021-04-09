@@ -1,10 +1,15 @@
 import dayjs from "dayjs";
-import { useEffect, useState } from "react";
-import { Container } from "react-bootstrap";
+import { useContext, useEffect, useState } from "react";
+import { Button, Container } from "react-bootstrap";
 import customParseFormat from "dayjs/plugin/customParseFormat";
+import { ClockContext } from "./context/ClockContext";
+import { DecrementContext } from "./context/DecrementContext";
 dayjs.extend(customParseFormat);
 
-const Clock = ({ decrement }) => {
+const Clock = () => {
+  const [clock, setClock] = useContext(ClockContext);
+  const [decrement, setDecrement] = useContext(DecrementContext);
+
   const [time, setTime] = useState(new Date());
 
   useEffect(() => {
@@ -19,7 +24,13 @@ const Clock = ({ decrement }) => {
 
   return (
     <Container>
-      <h1>{time.toLocaleTimeString()}</h1>
+      {clock ? (
+        <>
+          {" "}
+          <h1>{time.toLocaleTimeString()}</h1>
+          <Button onClick={() => setClock(false)}>Change Decrement</Button>
+        </>
+      ) : null}
     </Container>
   );
 };
